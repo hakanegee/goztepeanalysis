@@ -65,6 +65,10 @@ The planned data preparation steps include:
 
 Incoming transfers will be the primary focus of the analysis, as they directly reflect the club’s scouting and recruitment strategy.
 
+### Performance Data (FBref)
+
+Player-level performance statistics (standard and miscellaneous stats) were obtained from FBref for selected Süper Lig seasons. Due to FBref’s automated scraping restrictions, these tables were manually extracted and stored as structured Excel files under `data/fbref/`. These datasets are used to evaluate the on-field contribution of newly transferred players before and after the Sport Republic acquisition.
+
 
 # Planned Analysis
 
