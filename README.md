@@ -1,7 +1,4 @@
 # Project Proposal: Göztepe’s Scouting Strategy and Sporting Recovery
-
-⸻
-
 # Motivation
 
 Since my childhood, I have always been passionate about football — both playing and watching it. In recent months, I have started merging this long-term interest with my academic and professional life. I have taken courses on scouting, conducted independent research, connected with professionals on LinkedIn, and begun shaping a career path specifically focused on football analytics and recruitment.
