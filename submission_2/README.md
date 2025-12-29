@@ -1,4 +1,4 @@
-Exploratory Data Analysis (EDA)
+# Exploratory Data Analysis (EDA)
 
 Boxplots are used to visualize differences in player performance distributions across periods.
 
@@ -11,11 +11,11 @@ These visual patterns suggest that the most notable change after the Sport Repub
 
 ⸻
 
-Hypothesis Testing
+# Hypothesis Testing
 
 To formally assess these differences, Welch’s two-sample t-tests are conducted between pre- and post-acquisition periods for each key metric.
 
-Hypotheses
+# Hypotheses
 
 H₀ (Null Hypothesis):
 The Sport Republic acquisition did not lead to meaningful changes in Göztepe’s transfer profiles or the on-field performance of newly transferred players.
@@ -23,7 +23,7 @@ The Sport Republic acquisition did not lead to meaningful changes in Göztepe’
 H₁ (Alternative Hypothesis):
 The Sport Republic acquisition positively influenced Göztepe’s sporting success by introducing a more effective scouting and recruitment strategy, observable through changes in player profiles and on-field performance.
 
-Results Summary
+# Results Summary
 	•	Defensive actions: A statistically significant difference is observed between periods (p < 0.01).
 	•	Playing time (90s): No statistically significant difference detected.
 	•	Goal contributions per 90: No statistically significant difference detected.
@@ -32,7 +32,7 @@ These results indicate that the primary measurable change following the acquisit
 
 ⸻
 
-Interpretation and Link to Sporting Outcomes
+# Interpretation and Link to Sporting Outcomes
 
 The statistically significant reduction in individual defensive actions suggests improved collective organization and positional discipline in the post-Sport Republic period. Rather than relying on frequent individual interventions, the team appears to operate within a more structured defensive system.
 
@@ -47,7 +47,7 @@ Repository Structure
 
 ⸻
 
-Conclusion
+# Conclusion
 
 This submission demonstrates how exploratory data analysis and basic hypothesis testing can be used to evaluate organizational change in a football club context. The findings suggest that the Sport Republic acquisition coincides with a defensively oriented performance shift, providing initial quantitative support for changes in recruitment and team structure.
 
