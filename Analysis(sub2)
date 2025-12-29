@@ -1,34 +1,27 @@
-# Submission 2 – Exploratory Data Analysis and Hypothesis Testing
-This notebook analyzes Göztepe’s transfer strategy and on-field performance 
-before and after the Sport Republic acquisition in 2022.
-Data sources:
-- Transfermarkt (2020–2026): transfer profiles
-- FBref (selected seasons): player performance statistics
-
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import ttest_ind
 
-std_2122 = pd.read_excel("Goztepe2122StandardStats.xlsx")
-std_2425 = pd.read_excel("Goztepe2425StandardStats.xlsx")
-std_2526 = pd.read_excel("Goztepe_2025_2026 Standard Stats Clean.xlsx")
+# --- LOAD (use repo paths) ---
+std_2122 = pd.read_excel("data/fbref/Goztepe2122StandardStats.xlsx")
+std_2425 = pd.read_excel("data/fbref/Goztepe2425StandardStats.xlsx")
+std_2526 = pd.read_excel("data/fbref/Goztepe_2025_2026 Standard Stats Clean.xlsx")
 
+misc_2122 = pd.read_excel("data/fbref/Goztepe2122MiscStatsClean.xlsx")
+misc_2425 = pd.read_excel("data/fbref/Goztepe2425MiscStatsClean.xlsx")
+misc_2526 = pd.read_excel("data/fbref/Goztepe_2025_2026_Misc_Stats_Clean.xlsx")
+
+# --- LABEL seasons ---
 std_2122["season"] = "2021-2022"
 std_2425["season"] = "2024-2025"
 std_2526["season"] = "2025-2026"
-
 standard_df = pd.concat([std_2122, std_2425, std_2526], ignore_index=True)
-
-misc_2122 = pd.read_excel("Goztepe2122MiscStatsClean.xlsx")
-misc_2425 = pd.read_excel("Goztepe2425MiscStatsClean.xlsx")
-misc_2526 = pd.read_excel("Goztepe_2025_2026_Misc_Stats_Clean.xlsx")
 
 misc_2122["season"] = "2021-2022"
 misc_2425["season"] = "2024-2025"
 misc_2526["season"] = "2025-2026"
-
 misc_df = pd.concat([misc_2122, misc_2425, misc_2526], ignore_index=True)
 
 def period_label(season):
@@ -37,30 +30,38 @@ def period_label(season):
 standard_df["period"] = standard_df["season"].apply(period_label)
 misc_df["period"] = misc_df["season"].apply(period_label)
 
-sns.boxplot(data=standard_df, x="period", y="90s")
-plt.title("Minutes Played (90s) – Pre vs Post Sport Republic")
+# --- EDA PLOTS (use real columns) ---
+sns.boxplot(data=standard_df, x="period", y="Minutes")
+plt.title("Minutes Played – Pre vs Post Sport Republic")
 plt.show()
 
-sns.boxplot(data=standard_df, x="period", y="G+A")
-plt.title("Goal Contributions – Pre vs Post")
+sns.boxplot(data=standard_df, x="period", y="G+A per 90")
+plt.title("Goal Contributions (G+A per 90) – Pre vs Post")
 plt.show()
 
-misc_df["def_actions"] = misc_df["Int"] + misc_df["TklW"]
+# misc: make defensive actions robust across seasons
+# (2425 & 2526 don't have Tackles Won -> fill with 0)
+if "Tackles Won" not in misc_df.columns:
+    misc_df["Tackles Won"] = 0
+misc_df["Tackles Won"] = misc_df["Tackles Won"].fillna(0)
+
+misc_df["def_actions"] = misc_df["Interceptions"].fillna(0) + misc_df["Tackles Won"]
 
 sns.boxplot(data=misc_df, x="period", y="def_actions")
-plt.title("Defensive Actions – Pre vs Post")
+plt.title("Defensive Actions (Interceptions + Tackles Won) – Pre vs Post")
 plt.show()
 
-pre_90s = standard_df[standard_df["period"]=="Pre-Sport Republic"]["90s"].dropna()
-post_90s = standard_df[standard_df["period"]=="Post-Sport Republic"]["90s"].dropna()
+# --- T-TESTS ---
+pre_min = standard_df[standard_df["period"]=="Pre-Sport Republic"]["Minutes"].dropna()
+post_min = standard_df[standard_df["period"]=="Post-Sport Republic"]["Minutes"].dropna()
+print("T-test Minutes:", ttest_ind(pre_min, post_min, equal_var=False))
 
-t, p = ttest_ind(pre_90s, post_90s, equal_var=False)
-t, p
-
+pre_ga90 = standard_df[standard_df["period"]=="Pre-Sport Republic"]["G+A per 90"].dropna()
+post_ga90 = standard_df[standard_df["period"]=="Post-Sport Republic"]["G+A per 90"].dropna()
+print("T-test G+A per 90:", ttest_ind(pre_ga90, post_ga90, equal_var=False))
 
 pre_def = misc_df[misc_df["period"]=="Pre-Sport Republic"]["def_actions"].dropna()
 post_def = misc_df[misc_df["period"]=="Post-Sport Republic"]["def_actions"].dropna()
-
-ttest_ind(pre_def, post_def, equal_var=False)
+print("T-test Defensive Actions:", ttest_ind(pre_def, post_def, equal_var=False))
 
 
